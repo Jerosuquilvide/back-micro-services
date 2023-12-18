@@ -1,5 +1,5 @@
 const TABLE = 'users';
-
+const nanoid = require('nanoid')
 
 module.exports = function(injectedStore) {
     store = injectedStore
@@ -12,8 +12,18 @@ module.exports = function(injectedStore) {
     function get(id){
         return store.get(TABLE,id)
     }
+
+    function upsert(body){
+        const user = {
+            name: body.name
+        }
+        body.id ? user.id = body.id : user.id = nanoid()
+
+        return store.upsert(TABLE, user)
+    }
     return { 
         list ,
-        get
+        get,
+        upsert
     }
 }
