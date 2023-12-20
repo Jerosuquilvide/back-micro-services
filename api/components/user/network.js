@@ -1,4 +1,5 @@
 const express = require('express');
+const secure = require('./secure')
 const response = require('../../../network/response');
 const Controller = require('./index');
 const router = express.Router();
@@ -7,7 +8,7 @@ const router = express.Router();
 router.get('/',list)
 router.get('/:id',get)
 router.post('/', upsert)
-router.put('/',upsert)
+router.put('/',  secure('update'),upsert)
 
 function list(req,res){
     Controller.list()
@@ -20,7 +21,6 @@ function list(req,res){
 }
 
 function get(req,res){
-
     Controller.get(req.params.id)
     .then((data) => {
         response.success(req,res, data ,200);
